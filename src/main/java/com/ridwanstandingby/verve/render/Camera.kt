@@ -48,7 +48,7 @@ class Camera(
 
     companion object {
         // The camera is looking down the z axis towards minus infinity in the camera frame
-        val CAMERA_FRAME_FORWARD = Vector3(0.0, 0.0, -1.0)
+        private val CAMERA_FRAME_FORWARD = Vector3(0.0, 0.0, -1.0)
         private val CAMERA_FRAME_RIGHT = Vector3(1.0, 0.0, 0.0)
         private val CAMERA_FRAME_UP = Vector3(0.0, 1.0, 0.0)
         private val CAMERA_FRAME_IDENTITY_TRANSFORM = Quaternion(0.0, CAMERA_FRAME_FORWARD)
