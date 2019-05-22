@@ -9,6 +9,7 @@ data class Vector3(val x: Double, val y: Double, val z: Double) {
     operator fun plus(o: Vector3) = Vector3(x + o.x, y + o.y, z + o.z)
     operator fun minus(o: Vector3) = Vector3(x - o.x, y - o.y, z - o.z)
     operator fun times(k: Double) = Vector3(x * k, y * k, z * k)
+    operator fun unaryMinus() = Vector3(-x, -y, -z)
     infix fun dot(o: Vector3) = x * o.x + y * o.y + z * o.z
 
     fun rotate(q: Quaternion): Vector3 = (q * (this.toQuaternion() * q.inverse())).axis()

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import com.ridwanstandingby.verve.math.IntVector2
 import com.ridwanstandingby.verve.sensor.RotationDetector
+import com.ridwanstandingby.verve.sensor.swipe.SwipeDetector
 
 fun AnimationActivity.calculateScreenSize(): IntVector2 {
     val metrics = DisplayMetrics().also { windowManager.defaultDisplay.getRealMetrics(it) }
@@ -19,6 +20,9 @@ fun AnimationActivity.createRotationDetector(): RotationDetector {
     val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
     return RotationDetector(sensorManager, rotationSensor)
 }
+
+fun AnimationActivity.createSwipeDetector(): SwipeDetector =
+    SwipeDetector().also { this@createSwipeDetector.motionEventHandler = it::handleMotionEvent }
 
 fun AnimationActivity.keepScreenOnAndHideSystemUI() {
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
