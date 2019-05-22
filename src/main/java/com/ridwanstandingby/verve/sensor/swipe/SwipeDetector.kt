@@ -7,24 +7,32 @@ import com.ridwanstandingby.verve.math.FloatVector2
 
 class SwipeDetector {
 
-    var swipes = mutableListOf<Swipe>()
+    var swipes = listOf<Swipe>()
+        get() {
+            field = swipesBuffer.toList()
+            swipesBuffer = mutableListOf()
+            return field
+        }
+        private set
 
-    private var mVelocityTracker: VelocityTracker? = null
+    private var swipesBuffer = mutableListOf<Swipe>()
+
+    private var velocityTracker: VelocityTracker? = null
 
     @SuppressLint("Recycle")
     fun handleMotionEvent(event: MotionEvent) {
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                mVelocityTracker?.clear()
-                mVelocityTracker = mVelocityTracker ?: VelocityTracker.obtain()
-                mVelocityTracker?.addMovement(event)
+                velocityTracker?.clear()
+                velocityTracker = velocityTracker ?: VelocityTracker.obtain()
+                velocityTracker?.addMovement(event)
             }
             MotionEvent.ACTION_MOVE -> {
-                mVelocityTracker?.apply {
+                velocityTracker?.apply {
                     val pointerId: Int = event.getPointerId(event.actionIndex)
                     addMovement(event)
                     computeCurrentVelocity(1000)
-                    swipes.add(
+                    swipesBuffer.add(
                         Swipe(
                             FloatVector2(event.getX(pointerId), event.getY(pointerId)),
                             FloatVector2(getXVelocity(pointerId), getYVelocity(pointerId))
@@ -33,8 +41,8 @@ class SwipeDetector {
                 }
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                mVelocityTracker?.recycle()
-                mVelocityTracker = null
+                velocityTracker?.recycle()
+                velocityTracker = null
             }
         }
     }
