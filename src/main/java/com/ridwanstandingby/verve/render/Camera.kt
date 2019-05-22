@@ -40,6 +40,9 @@ class Camera(
     var downDirection: Vector3 = -CAMERA_FRAME_UP
         private set
 
+    /**
+     * Update the [transformation] and apply the defined [rotationTransformer] to get to the correct Quaternion
+     */
     fun updateCamera(q: Quaternion) {
         transformation = rotationTransformer(q)
     }
