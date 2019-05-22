@@ -19,31 +19,37 @@ class SwipeDetector {
 
     private var velocityTracker: VelocityTracker? = null
 
-    @SuppressLint("Recycle")
     fun handleMotionEvent(event: MotionEvent) {
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> {
-                velocityTracker?.clear()
-                velocityTracker = velocityTracker ?: VelocityTracker.obtain()
-                velocityTracker?.addMovement(event)
-            }
-            MotionEvent.ACTION_MOVE -> {
-                velocityTracker?.apply {
-                    val pointerId: Int = event.getPointerId(event.actionIndex)
-                    addMovement(event)
-                    computeCurrentVelocity(1000)
-                    swipesBuffer.add(
-                        Swipe(
-                            FloatVector2(event.getX(pointerId), event.getY(pointerId)),
-                            FloatVector2(getXVelocity(pointerId), getYVelocity(pointerId))
-                        )
-                    )
-                }
-            }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                velocityTracker?.recycle()
-                velocityTracker = null
-            }
+            MotionEvent.ACTION_DOWN -> beginVelocityTracker(event)
+            MotionEvent.ACTION_MOVE -> createSwipe(event)
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> resetVelocityTracker()
         }
+    }
+
+    @SuppressLint("Recycle")
+    private fun beginVelocityTracker(event: MotionEvent) {
+        velocityTracker?.clear()
+        velocityTracker = velocityTracker ?: VelocityTracker.obtain()
+        velocityTracker?.addMovement(event)
+    }
+
+    private fun createSwipe(event: MotionEvent) {
+        velocityTracker?.apply {
+            val pointerId: Int = event.getPointerId(event.actionIndex)
+            addMovement(event)
+            computeCurrentVelocity(1000)
+            swipesBuffer.add(
+                Swipe(
+                    FloatVector2(event.getX(pointerId), event.getY(pointerId)),
+                    FloatVector2(getXVelocity(pointerId), getYVelocity(pointerId))
+                )
+            )
+        }
+    }
+
+    private fun resetVelocityTracker() {
+        velocityTracker?.recycle()
+        velocityTracker = null
     }
 }

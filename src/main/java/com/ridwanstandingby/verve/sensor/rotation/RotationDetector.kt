@@ -1,4 +1,4 @@
-package com.ridwanstandingby.verve.sensor
+package com.ridwanstandingby.verve.sensor.rotation
 
 import android.hardware.Sensor
 import android.hardware.SensorEvent

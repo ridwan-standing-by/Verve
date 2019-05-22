@@ -4,7 +4,13 @@ import com.ridwanstandingby.verve.math.FloatVector2
 import com.ridwanstandingby.verve.math.IntVector2
 import com.ridwanstandingby.verve.math.Quaternion
 import com.ridwanstandingby.verve.math.Vector3
+import com.ridwanstandingby.verve.render.Camera.Companion.CAMERA_FRAME_FORWARD
 
+/**
+ * The [Camera] is fully defined by a quaternion stored in [transformation] that encodes how to transform between the
+ * world's frame and the camera's frame. The screen is a plane defined by [CAMERA_FRAME_FORWARD] that points can be
+ * projected to and from.
+ */
 class Camera(
     val screenDimension: IntVector2,
     private val rotationTransformer: (Quaternion) -> Quaternion,
@@ -13,7 +19,7 @@ class Camera(
 
     private val screenOrigin = FloatVector2(screenDimension.x / 2, screenDimension.y / 2)
 
-    var transform: Quaternion = initialDirection
+    var transformation: Quaternion = initialDirection
         private set(value) {
             field = value
             direction = inverseTransform(CAMERA_FRAME_FORWARD)
@@ -34,21 +40,21 @@ class Camera(
     var downDirection: Vector3 = -CAMERA_FRAME_UP
         private set
 
-    fun updateTransform(q: Quaternion) {
-        transform = rotationTransformer(q)
+    fun updateCamera(q: Quaternion) {
+        transformation = rotationTransformer(q)
     }
 
     /**
      * Transform a vector from the world's frame to the camera's frame
      */
     fun transform(v: Vector3) =
-        v.rotate(transform.inverse()) // The inverse is used to rotate everything else in the view to the Camera's frame
+        v.rotate(transformation.inverse()) // The inverse is used to rotate everything else in the view to the Camera's frame
 
     /**
      * Transform a vector from the camera's frame to the world's frame
      */
     fun inverseTransform(v: Vector3) =
-        v.rotate(transform)
+        v.rotate(transformation)
 
     /**
      * Transform a vector from the world's frame to the screen's pixels

@@ -7,7 +7,7 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
 import com.ridwanstandingby.verve.math.IntVector2
-import com.ridwanstandingby.verve.sensor.RotationDetector
+import com.ridwanstandingby.verve.sensor.rotation.RotationDetector
 import com.ridwanstandingby.verve.sensor.swipe.SwipeDetector
 
 fun AnimationActivity.calculateScreenSize(): IntVector2 {
