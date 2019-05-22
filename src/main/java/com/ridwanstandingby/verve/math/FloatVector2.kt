@@ -8,6 +8,10 @@ data class FloatVector2(val x: Float, val y: Float) {
 
     operator fun plus(o: FloatVector2) = FloatVector2(x + o.x, y + o.y)
     operator fun minus(o: FloatVector2) = FloatVector2(x - o.x, y - o.y)
+
+    companion object {
+        val O = FloatVector2(0f, 0f)
+    }
 }
 
 fun dist(a: FloatVector2, b: FloatVector2) = sqrt((a.x - b.x).sq() + (a.y - b.y).sq())

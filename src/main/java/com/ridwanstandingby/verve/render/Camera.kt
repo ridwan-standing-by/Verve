@@ -51,7 +51,7 @@ class Camera(
      * Transform a vector from the world's frame to the camera's frame
      */
     fun transform(v: Vector3) =
-        v.rotate(transformation.inverse()) // The inverse is used to rotate everything else in the view to the Camera's frame
+        v.rotate(transformation.inverse())
 
     /**
      * Transform a vector from the camera's frame to the world's frame
@@ -60,18 +60,21 @@ class Camera(
         v.rotate(transformation)
 
     /**
-     * Transform a vector from the world's frame to the screen's pixels
+     * Transform a vector from the world's frame to the screen's pixels.
+     * @param [absolute] indicates whether the vector is absolute, and should be translated, or if it is relative
      */
-    fun project(v: Vector3): FloatVector2 =
+    fun project(v: Vector3, absolute: Boolean = true): FloatVector2 =
         transform(v).let {
-            FloatVector2(it.x, -it.y) + screenOrigin // Note that camY is measured from the top of the screen
+            // Note that camY is measured from the top of the screen
+            FloatVector2(it.x, -it.y) + if (absolute) screenOrigin else FloatVector2.O
         }
 
     /**
      * Transform from screen's pixels to a vector in the world's frame
+     * @param [absolute] indicates whether the vector is absolute, and should be translated, or if it is relative
      */
-    fun inverseProject(v: FloatVector2) =
-        inverseTransform((v - screenOrigin).let {
+    fun inverseProject(v: FloatVector2, absolute: Boolean = true) =
+        inverseTransform((v - if (absolute) screenOrigin else FloatVector2.O).let {
             Vector3(it.x.toDouble(), -it.y.toDouble(), 0.0)
         })
 
