@@ -2,6 +2,7 @@ package com.ridwanstandingby.verve.sensor.swipe
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent
+import android.view.MotionEvent.*
 import android.view.VelocityTracker
 import com.ridwanstandingby.verve.math.FloatVector2
 
@@ -21,9 +22,9 @@ class SwipeDetector {
 
     fun handleMotionEvent(event: MotionEvent) {
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> beginVelocityTracker(event)
-            MotionEvent.ACTION_MOVE -> createSwipe(event)
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> resetVelocityTracker()
+            ACTION_DOWN -> beginVelocityTracker(event)
+            ACTION_MOVE -> createSwipe(event)
+            ACTION_UP, ACTION_CANCEL -> resetVelocityTracker()
         }
     }
 
@@ -36,15 +37,16 @@ class SwipeDetector {
 
     private fun createSwipe(event: MotionEvent) {
         velocityTracker?.apply {
-            val pointerId: Int = event.getPointerId(event.actionIndex)
             addMovement(event)
             computeCurrentVelocity(1000)
-            swipesBuffer.add(
-                Swipe(
-                    FloatVector2(event.getX(pointerId), event.getY(pointerId)),
-                    FloatVector2(getXVelocity(pointerId), getYVelocity(pointerId))
+            (0 until event.pointerCount).forEach { pointerIndex ->
+                swipesBuffer.add(
+                    Swipe(
+                        FloatVector2(event.getX(pointerIndex), event.getY(pointerIndex)),
+                        FloatVector2(getXVelocity(pointerIndex), getYVelocity(pointerIndex))
+                    )
                 )
-            )
+            }
         }
     }
 
