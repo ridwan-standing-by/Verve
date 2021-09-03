@@ -1,7 +1,9 @@
 package com.ridwanstandingby.verve.render
 
 import android.graphics.Bitmap
+import com.ridwanstandingby.verve.tools.Api
 
+@Api
 class BitmapGenerator(private val x: Int, private val y: Int) {
 
     val bitmap: Bitmap

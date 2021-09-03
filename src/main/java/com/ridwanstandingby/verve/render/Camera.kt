@@ -5,6 +5,7 @@ import com.ridwanstandingby.verve.math.IntVector2
 import com.ridwanstandingby.verve.math.Quaternion
 import com.ridwanstandingby.verve.math.Vector3
 import com.ridwanstandingby.verve.render.Camera.Companion.CAMERA_FRAME_FORWARD
+import com.ridwanstandingby.verve.tools.Api
 
 /**
  * The [Camera] is fully defined by a quaternion stored in [transformation] that encodes how to transform between the
@@ -12,13 +13,14 @@ import com.ridwanstandingby.verve.render.Camera.Companion.CAMERA_FRAME_FORWARD
  * projected to and from.
  */
 class Camera(
-    val screenDimension: IntVector2,
+    @Api val screenDimension: IntVector2,
     private val rotationTransformer: (Quaternion) -> Quaternion,
     initialDirection: Quaternion = CAMERA_FRAME_IDENTITY_TRANSFORM
 ) {
 
     private val screenOrigin = FloatVector2(screenDimension.x / 2, screenDimension.y / 2)
 
+    @Api
     var transformation: Quaternion = initialDirection
         private set(value) {
             field = value
@@ -29,20 +31,30 @@ class Camera(
             downDirection = -upDirection
         }
 
+    @Api
     var direction: Vector3 = CAMERA_FRAME_FORWARD
         private set
+
+    @Api
     var rightDirection: Vector3 = CAMERA_FRAME_RIGHT
         private set
+
+    @Api
     var leftDirection: Vector3 = -CAMERA_FRAME_RIGHT
         private set
+
+    @Api
     var upDirection: Vector3 = CAMERA_FRAME_UP
         private set
+
+    @Api
     var downDirection: Vector3 = -CAMERA_FRAME_UP
         private set
 
     /**
      * Update the [transformation] and apply the defined [rotationTransformer] to get to the correct Quaternion
      */
+    @Api
     fun updateCamera(q: Quaternion) {
         transformation = rotationTransformer(q)
     }
@@ -50,12 +62,14 @@ class Camera(
     /**
      * Transform a vector from the world's frame to the camera's frame
      */
+    @Api
     fun transform(v: Vector3) =
         v.rotate(transformation.inverse())
 
     /**
      * Transform a vector from the camera's frame to the world's frame
      */
+    @Api
     fun inverseTransform(v: Vector3) =
         v.rotate(transformation)
 
@@ -63,6 +77,7 @@ class Camera(
      * Transform a vector from the world's frame to the screen's pixels.
      * @param [absolute] indicates whether the vector is absolute, and should be translated, or if it is relative
      */
+    @Api
     fun project(v: Vector3, absolute: Boolean = true): FloatVector2 =
         transform(v).let {
             // Note that camY is measured from the top of the screen
@@ -73,6 +88,7 @@ class Camera(
      * Transform from screen's pixels to a vector in the world's frame
      * @param [absolute] indicates whether the vector is absolute, and should be translated, or if it is relative
      */
+    @Api
     fun inverseProject(v: FloatVector2, absolute: Boolean = true) =
         inverseTransform((v - if (absolute) screenOrigin else FloatVector2.O).let {
             Vector3(it.x.toDouble(), -it.y.toDouble(), 0.0)

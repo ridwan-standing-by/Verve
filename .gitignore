@@ -1,3 +1,16 @@
 /build
 
 verve\.iml
+
+.gradle
+local.properties
+
+/build
+/captures
+.externalNativeBuild
+.cxx
+.DS_Store
+
+# IntelliJ IDEA / Android Studio
+/.idea/
+*.iml

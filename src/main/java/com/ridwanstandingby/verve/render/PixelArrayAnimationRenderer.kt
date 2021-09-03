@@ -1,11 +1,14 @@
-@file:Suppress("Unused", "weaker_access")
 package com.ridwanstandingby.verve.render
 
 import android.graphics.Canvas
 import com.ridwanstandingby.verve.animation.AnimationRenderer
+import com.ridwanstandingby.verve.tools.Api
 
-abstract class PixelArrayAnimationRenderer(val worldX: Int, val worldY: Int) : AnimationRenderer() {
+@Api
+abstract class PixelArrayAnimationRenderer(@Api val worldX: Int, @Api val worldY: Int) :
+    AnimationRenderer() {
 
+    @Api
     val pixelArray: IntArray = IntArray(worldX * worldY)
 
     private val bitmapGenerator = BitmapGenerator(worldX, worldY)

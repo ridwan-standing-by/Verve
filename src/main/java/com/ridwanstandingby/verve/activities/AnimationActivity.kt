@@ -1,32 +1,30 @@
 package com.ridwanstandingby.verve.activities
 
-import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.ridwanstandingby.verve.animation.AnimationRenderView
+import com.ridwanstandingby.verve.animation.AnimationView
+import com.ridwanstandingby.verve.tools.Api
 
+@Api
 abstract class AnimationActivity : AppCompatActivity() {
 
-    private lateinit var animationRenderView: AnimationRenderView
+    private var animationView: AnimationView? = null
 
-    abstract fun createAnimationRenderView(): AnimationRenderView
+    protected abstract fun defineAnimationView(): AnimationView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        animationRenderView = createAnimationRenderView()
-        setContentView(animationRenderView)
-    }
+    @Api
+    fun createAnimationView(): AnimationView =
+        defineAnimationView().also { animationView = it }
 
     override fun onResume() {
         super.onResume()
         keepScreenOnAndHideSystemUI()
-        animationRenderView.resume()
+        animationView?.resume()
     }
 
     override fun onPause() {
         super.onPause()
-        animationRenderView.pause()
+        animationView?.pause()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

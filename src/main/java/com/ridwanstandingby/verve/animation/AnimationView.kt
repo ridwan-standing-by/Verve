@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.SurfaceView
 
 @SuppressLint("ViewConstructor")
-class AnimationRenderView(
+class AnimationView(
     context: Context,
     private val animationRule: AnimationRule<*, *, *, *>
 ) : SurfaceView(context) {

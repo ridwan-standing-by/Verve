@@ -5,9 +5,11 @@ import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.view.VelocityTracker
 import com.ridwanstandingby.verve.math.FloatVector2
+import com.ridwanstandingby.verve.tools.Api
 
 class SwipeDetector {
 
+    @Api
     var swipes = listOf<Swipe>()
         get() {
             field = swipesBuffer.toList()
