@@ -1,6 +1,9 @@
 package com.ridwanstandingby.verve.animation
 
 import android.os.SystemClock
+import com.ridwanstandingby.verve.tools.extractNsRemainderFromSToMs
+import com.ridwanstandingby.verve.tools.nsToS
+import com.ridwanstandingby.verve.tools.sToMs
 import java.lang.Thread.sleep
 
 internal class AnimationRunner(
@@ -43,20 +46,18 @@ internal class AnimationRunner(
 
     private fun continueRunning() {
         t = SystemClock.elapsedRealtimeNanos()
-        val dt = (t - lastUpdated).toDouble() / 1000000000.0
+        val dt = (t - lastUpdated).nsToS()
         if (dt < animation.parameters.minTimeStep) {
             val timeToSleep = animation.parameters.minTimeStep - dt
-            sleep(
-                (timeToSleep * 1000.0).toLong(),
-                ((timeToSleep * 1_000_000_000.0).toLong() % 1_000_000).toInt()
-            )
-        }
-        update(dt)
-        lastUpdated = t
+            sleep(timeToSleep.sToMs(), timeToSleep.extractNsRemainderFromSToMs())
+        } else {
+            update(dt)
+            lastUpdated = t
 
-        if ((t - lastRendered).toDouble() / 1_000_000_000.0 < 1 / animation.renderer.fps) {
-            render()
-            lastRendered = t
+            if ((t - lastRendered).nsToS() > 1 / animation.renderer.fps) {
+                render()
+                lastRendered = t
+            }
         }
     }
 

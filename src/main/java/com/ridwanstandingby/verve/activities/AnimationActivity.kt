@@ -2,6 +2,7 @@ package com.ridwanstandingby.verve.activities
 
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import com.ridwanstandingby.verve.animation.AnimationView
 import com.ridwanstandingby.verve.tools.Api
 
@@ -14,7 +15,9 @@ abstract class AnimationActivity : AppCompatActivity() {
 
     @Api
     fun createAnimationView(): AnimationView =
-        defineAnimationView().also { animationView = it }
+        defineAnimationView()
+            .also { animationView = it }
+            .also { if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) it.resume() }
 
     override fun onResume() {
         super.onResume()
