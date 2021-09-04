@@ -5,6 +5,7 @@ import com.ridwanstandingby.verve.tools.extractNsRemainderFromSToMs
 import com.ridwanstandingby.verve.tools.nsToS
 import com.ridwanstandingby.verve.tools.sToMs
 import java.lang.Thread.sleep
+import kotlin.math.min
 
 internal class AnimationRunner(
     private val animationView: AnimationView,
@@ -51,7 +52,7 @@ internal class AnimationRunner(
             val timeToSleep = animation.parameters.minTimeStep - dt
             sleep(timeToSleep.sToMs(), timeToSleep.extractNsRemainderFromSToMs())
         } else {
-            update(dt)
+            update(min(dt, animation.parameters.maxTimeStep))
             lastUpdated = t
 
             if ((t - lastRendered).nsToS() > 1 / animation.renderer.fps) {
