@@ -2,7 +2,7 @@ package com.ridwanstandingby.verve.activities
 
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
+import com.ridwanstandingby.verve.animation.AnimationRunner
 import com.ridwanstandingby.verve.animation.AnimationView
 import com.ridwanstandingby.verve.math.IntVector2
 import com.ridwanstandingby.verve.tools.Api
@@ -10,25 +10,26 @@ import com.ridwanstandingby.verve.tools.Api
 @Api
 abstract class AnimationActivity : AppCompatActivity() {
 
-    private var animationView: AnimationView? = null
-
-    protected abstract fun defineAnimationView(viewSize: IntVector2): AnimationView
+    protected abstract fun getAnimationRunner(): AnimationRunner
 
     @Api
-    fun createAnimationView(viewSize: IntVector2 = calculateScreenSize()): AnimationView =
-        defineAnimationView(viewSize)
-            .also { animationView = it }
-            .also { if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) it.resume() }
+    fun createAndAttachAnimationView(viewSize: IntVector2 = calculateScreenSize()): AnimationView =
+        AnimationView(this)
+            .also { attachAnimationViewToRunner(it) }
+
+    private fun attachAnimationViewToRunner(animationView: AnimationView) {
+        getAnimationRunner().attach(animationView)
+    }
 
     override fun onResume() {
         super.onResume()
         keepScreenOnAndHideSystemUI()
-        animationView?.resume()
+        getAnimationRunner().resume()
     }
 
     override fun onPause() {
         super.onPause()
-        animationView?.pause()
+        getAnimationRunner().pause()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

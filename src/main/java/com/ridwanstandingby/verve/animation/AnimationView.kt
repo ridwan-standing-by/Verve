@@ -5,19 +5,4 @@ import android.content.Context
 import android.view.SurfaceView
 
 @SuppressLint("ViewConstructor")
-class AnimationView(
-    context: Context,
-    private val animationRule: AnimationRule<*, *, *, *>
-) : SurfaceView(context) {
-
-    private lateinit var animationRunner: AnimationRunner
-
-    fun resume() {
-        animationRunner = AnimationRunner(this, animationRule.create())
-        animationRunner.start()
-    }
-
-    fun pause() {
-        animationRunner.stop()
-    }
-}
+class AnimationView(context: Context) : SurfaceView(context)
