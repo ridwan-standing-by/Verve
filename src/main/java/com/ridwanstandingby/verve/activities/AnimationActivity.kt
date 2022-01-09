@@ -39,10 +39,13 @@ abstract class AnimationActivity : AppCompatActivity() {
         }
     }
 
-    var motionEventHandler: ((MotionEvent) -> Unit)? = null
+    val motionEventHandlers: MutableList<(MotionEvent) -> Unit> = mutableListOf()
+
+    @Api
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null) {
-            this.motionEventHandler?.invoke(event) ?: return super.onTouchEvent(event)
+            if (motionEventHandlers.isEmpty()) return super.onTouchEvent(event)
+            this.motionEventHandlers.forEach { it.invoke(event) }
             return true
         }
         return false
