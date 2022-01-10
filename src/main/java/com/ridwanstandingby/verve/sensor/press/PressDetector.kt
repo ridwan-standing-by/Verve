@@ -11,25 +11,23 @@ class PressDetector {
 
     fun handleMotionEvent(event: MotionEvent) {
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN ->
+            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN ->
                 createPress(event)
             MotionEvent.ACTION_MOVE ->
                 resetPress(event)
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_CANCEL ->
                 clearPress(event)
         }
     }
 
     private fun createPress(event: MotionEvent) {
-        (0 until event.pointerCount).forEach { pointerIndex ->
-            val id = event.getPointerId(pointerIndex)
+        val actionIndex = event.actionIndex
+        val id = event.getPointerId(actionIndex)
+        if (presses.none { it.id == id }) {
             presses.add(
                 Press(
                     id = id,
-                    screenPosition = FloatVector2(
-                        event.getX(pointerIndex),
-                        event.getY(pointerIndex)
-                    ),
+                    screenPosition = FloatVector2(event.getX(actionIndex), event.getY(actionIndex)),
                     runningTime = 0.0
                 )
             )
@@ -37,17 +35,15 @@ class PressDetector {
     }
 
     private fun resetPress(event: MotionEvent) {
-        (0 until event.pointerCount).forEach { pointerIndex ->
-            val id = event.getPointerId(pointerIndex)
-            presses.filter { it.id == id }.forEach { it.runningTime = 0.0 }
-        }
+        val actionIndex = event.actionIndex
+        val id = event.getPointerId(actionIndex)
+        presses.filter { it.id == id }.forEach { it.runningTime = 0.0 }
     }
 
     private fun clearPress(event: MotionEvent) {
-        (0 until event.pointerCount).forEach { pointerIndex ->
-            val id = event.getPointerId(pointerIndex)
-            presses.removeAll { it.id == id }
-        }
+        val actionIndex = event.actionIndex
+        val id = event.getPointerId(actionIndex)
+        presses.removeAll { it.id == id }
     }
 
     @Api
