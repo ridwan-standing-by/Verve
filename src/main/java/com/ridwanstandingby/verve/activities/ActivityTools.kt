@@ -35,7 +35,8 @@ fun AnimationActivity.createPressDetector(): PressDetector =
     PressDetector().also { motionEventHandlers.add(it::handleMotionEvent) }
 
 fun AnimationActivity.keepScreenOnAndHideSystemUI() {
-    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    @Suppress("deprecation")
+    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or WindowManager.LayoutParams.FLAG_FULLSCREEN)
     supportActionBar?.hide()
     @Suppress("deprecation")
     window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
