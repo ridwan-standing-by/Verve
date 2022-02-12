@@ -6,9 +6,20 @@ import com.ridwanstandingby.verve.tools.Api
 
 class PressDetector {
 
-    @Api
-    var presses = mutableListOf<Press>()
+    private val presses = mutableListOf<Press>()
 
+    @Api
+    @Synchronized
+    fun updateAndGetPresses(dt: Double): List<Press> =
+        presses.map { it.also { it.runningTime += dt }.copy() }
+
+    @Api
+    @Synchronized
+    fun resetPresses() {
+        presses.forEach { it.runningTime = 0.0 }
+    }
+
+    @Synchronized
     fun handleMotionEvent(event: MotionEvent) {
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN ->
@@ -44,10 +55,5 @@ class PressDetector {
         val actionIndex = event.actionIndex
         val id = event.getPointerId(actionIndex)
         presses.removeAll { it.id == id }
-    }
-
-    @Api
-    fun updatePresses(dt: Double) {
-        presses.forEach { it.runningTime += dt }
     }
 }

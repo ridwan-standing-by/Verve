@@ -6,22 +6,20 @@ import android.view.MotionEvent.*
 import android.view.VelocityTracker
 import com.ridwanstandingby.verve.math.FloatVector2
 import com.ridwanstandingby.verve.tools.Api
+import java.util.concurrent.LinkedBlockingQueue
 
 class SwipeDetector {
 
     @Api
-    var swipes = listOf<Swipe>()
-        get() {
-            field = swipesBuffer.toList()
-            swipesBuffer = mutableListOf()
-            return field
-        }
-        private set
+    @Synchronized
+    fun getSwipes(): List<Swipe> =
+        mutableListOf<Swipe>().also { swipes.drainTo(it) }
 
-    private var swipesBuffer = mutableListOf<Swipe>()
+    private val swipes: LinkedBlockingQueue<Swipe> = LinkedBlockingQueue()
 
     private var velocityTracker: VelocityTracker? = null
 
+    @Synchronized
     fun handleMotionEvent(event: MotionEvent) {
         when (event.actionMasked) {
             ACTION_DOWN -> beginVelocityTracker(event)
@@ -42,7 +40,7 @@ class SwipeDetector {
             addMovement(event)
             computeCurrentVelocity(1000)
             (0 until event.pointerCount).forEach { pointerIndex ->
-                swipesBuffer.add(
+                swipes.add(
                     Swipe(
                         FloatVector2(event.getX(pointerIndex), event.getY(pointerIndex)),
                         FloatVector2(getXVelocity(pointerIndex), getYVelocity(pointerIndex))
