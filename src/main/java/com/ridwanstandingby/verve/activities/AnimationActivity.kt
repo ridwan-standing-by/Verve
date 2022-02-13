@@ -1,9 +1,9 @@
 package com.ridwanstandingby.verve.activities
 
 import android.view.MotionEvent
+import android.view.SurfaceView
 import androidx.appcompat.app.AppCompatActivity
 import com.ridwanstandingby.verve.animation.AnimationRunner
-import com.ridwanstandingby.verve.animation.AnimationView
 import com.ridwanstandingby.verve.math.IntVector2
 import com.ridwanstandingby.verve.tools.Api
 
@@ -13,12 +13,12 @@ abstract class AnimationActivity : AppCompatActivity() {
     protected abstract fun getAnimationRunner(): AnimationRunner
 
     @Api
-    fun createAndAttachAnimationView(viewSize: IntVector2 = calculateScreenSize()): AnimationView =
-        AnimationView(this)
-            .also { attachAnimationViewToRunner(it) }
+    fun createAndAttachAnimationView(viewSize: IntVector2 = calculateScreenSize()): SurfaceView =
+        SurfaceView(this)
+            .also { attachAnimationSurfaceToRunner(it) }
 
-    private fun attachAnimationViewToRunner(animationView: AnimationView) {
-        getAnimationRunner().attach(animationView)
+    private fun attachAnimationSurfaceToRunner(animationSurface: SurfaceView) {
+        getAnimationRunner().attach(animationSurface)
     }
 
     override fun onResume() {

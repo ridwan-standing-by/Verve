@@ -1,6 +1,8 @@
 package com.ridwanstandingby.verve.animation
 
 import android.os.SystemClock
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import android.view.View
 import com.ridwanstandingby.verve.tools.Api
 import com.ridwanstandingby.verve.tools.extractNsRemainderFromSToMs
@@ -19,7 +21,7 @@ class AnimationRunner(
     private var canDraw = false
     private var paused = false
 
-    private var animationView: AnimationView? = null
+    private var animationSurfaceHolder: SurfaceHolder? = null
 
     private var renderTaskThread: Thread? = null
 
@@ -31,18 +33,26 @@ class AnimationRunner(
         }
     }
 
-    fun attach(animationView: AnimationView) {
+    fun attach(animationView: SurfaceView) {
         animationView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
             override fun onViewAttachedToWindow(v: View?) {
-                this@AnimationRunner.animationView = animationView
+                this@AnimationRunner.animationSurfaceHolder = animationView.holder
                 resume()
             }
 
             override fun onViewDetachedFromWindow(v: View?) {
                 pause()
-                this@AnimationRunner.animationView = null
+                this@AnimationRunner.animationSurfaceHolder = null
             }
         })
+    }
+
+    fun attach(animationSurfaceHolder: SurfaceHolder) {
+        this.animationSurfaceHolder = animationSurfaceHolder
+    }
+    
+    fun detach(animationSurfaceHolder: SurfaceHolder) {
+        this.animationSurfaceHolder = null
     }
 
     fun start(animation: Animation<*, *, *>?) {
@@ -99,12 +109,12 @@ class AnimationRunner(
     }
 
     private fun render() {
-        animationView?.let {
-            if (it.holder.surface.isValid) {
-                val canvas = it.holder.lockCanvas()
-                if (canvas != null) {
+        animationSurfaceHolder?.let {
+            if (it.surface.isValid) {
+                val canvas = it.lockCanvas()
+                if (canvas != null && it.surface?.isValid == true) {
                     animation?.renderer?.updateCanvas(canvas)
-                    it.holder.unlockCanvasAndPost(canvas)
+                    it.unlockCanvasAndPost(canvas)
                 }
             }
         }
