@@ -29,10 +29,15 @@ class AnimationRunner(
         while (canDraw) {
             if (!paused) {
                 continueRunning()
+            } else {
+                sleep(100)
             }
         }
     }
 
+    private var animationViewOnAttachStateChangeListener: View.OnAttachStateChangeListener? = null
+
+    @Api
     fun attach(animationView: SurfaceView) {
         animationView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
             override fun onViewAttachedToWindow(v: View?) {
@@ -44,23 +49,34 @@ class AnimationRunner(
                 pause()
                 this@AnimationRunner.animationSurfaceHolder = null
             }
-        })
+        }.also { animationViewOnAttachStateChangeListener = it })
     }
 
-    fun attach(animationSurfaceHolder: SurfaceHolder) {
+    @Api
+    fun detach(animationView: SurfaceView) {
+        animationViewOnAttachStateChangeListener?.let {
+            animationView.removeOnAttachStateChangeListener(it)
+        }
+    }
+
+    @Api
+    fun attachSurfaceHolder(animationSurfaceHolder: SurfaceHolder) {
         this.animationSurfaceHolder = animationSurfaceHolder
     }
-    
-    fun detach(animationSurfaceHolder: SurfaceHolder) {
+
+    @Api
+    fun detachSurfaceHolder() {
         this.animationSurfaceHolder = null
     }
 
+    @Api
     fun start(animation: Animation<*, *, *>?) {
         this.animation = animation
         canDraw = true
         renderTaskThread = Thread(animationRunnable, "Animation-Runner-Thread").also { it.start() }
     }
 
+    @Api
     fun resume() {
         t = SystemClock.elapsedRealtimeNanos()
         lastUpdated = t
@@ -68,10 +84,12 @@ class AnimationRunner(
         paused = false
     }
 
+    @Api
     fun pause() {
         paused = true
     }
 
+    @Api
     fun stop() {
         canDraw = false
         while (renderTaskThread != null) {
