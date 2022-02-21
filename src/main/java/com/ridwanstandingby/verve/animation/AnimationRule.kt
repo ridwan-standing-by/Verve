@@ -10,6 +10,7 @@ class AnimationRule<A : Animation<P, R, I>, P : AnimationParameters, R : Animati
     private val animationInput: I
 ) {
 
-    internal fun create(): A =
+    @Api
+    fun create(): A =
         animationConstructor(animationParameters, animationRenderer, animationInput)
 }
