@@ -13,7 +13,7 @@ import kotlin.math.min
 
 @Api
 class AnimationRunner(
-    var animation: Animation<*, *, *>? = null
+    @Api var animation: Animation<*, *, *>? = null
 ) {
     private var t = SystemClock.elapsedRealtimeNanos()
     private var lastUpdated = t
