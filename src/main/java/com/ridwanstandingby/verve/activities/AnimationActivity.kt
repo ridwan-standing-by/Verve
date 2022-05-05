@@ -4,7 +4,7 @@ import android.view.MotionEvent
 import android.view.SurfaceView
 import androidx.appcompat.app.AppCompatActivity
 import com.ridwanstandingby.verve.animation.AnimationRunner
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
 @Api
 abstract class AnimationActivity : AppCompatActivity() {

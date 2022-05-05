@@ -5,9 +5,10 @@ import android.view.MotionEvent
 import android.view.MotionEvent.*
 import android.view.VelocityTracker
 import com.ridwanstandingby.verve.math.FloatVector2
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 import java.util.concurrent.LinkedBlockingQueue
 
+@Api
 class SwipeDetector {
 
     @Api

@@ -2,7 +2,7 @@ package com.ridwanstandingby.verve.render
 
 import android.graphics.Canvas
 import com.ridwanstandingby.verve.animation.AnimationRenderer
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
 @Api
 abstract class PixelArrayAnimationRenderer(@Api val worldX: Int, @Api val worldY: Int) :

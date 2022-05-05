@@ -2,7 +2,7 @@ package com.ridwanstandingby.verve.render
 
 import com.ridwanstandingby.verve.math.Quaternion
 import com.ridwanstandingby.verve.math.Vector3
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
 @Api
 val rotationSensorOutputToOuterSphericalCameraDirection = { q: Quaternion ->

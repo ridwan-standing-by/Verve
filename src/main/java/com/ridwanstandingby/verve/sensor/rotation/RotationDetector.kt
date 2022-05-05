@@ -5,8 +5,9 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.ridwanstandingby.verve.math.Quaternion
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
+@Api
 class RotationDetector(
     private val sensorManager: SensorManager,
     private val rotationSensor: Sensor

@@ -1,6 +1,6 @@
 package com.ridwanstandingby.verve.math
 
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 import kotlin.math.asin
 import kotlin.math.atan2
 import kotlin.math.cos

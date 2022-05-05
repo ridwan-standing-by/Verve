@@ -5,7 +5,7 @@ import com.ridwanstandingby.verve.math.IntVector2
 import com.ridwanstandingby.verve.math.Quaternion
 import com.ridwanstandingby.verve.math.Vector3
 import com.ridwanstandingby.verve.render.Camera.Companion.CAMERA_FRAME_FORWARD
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
 /**
  * The [Camera] is fully defined by a quaternion stored in [transformation] that encodes how to transform between the

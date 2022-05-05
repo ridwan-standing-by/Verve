@@ -2,8 +2,9 @@ package com.ridwanstandingby.verve.sensor.press
 
 import android.view.MotionEvent
 import com.ridwanstandingby.verve.math.FloatVector2
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
+@Api
 class PressDetector {
 
     private val presses = mutableListOf<Press>()

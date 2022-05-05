@@ -2,7 +2,7 @@
 
 package com.ridwanstandingby.verve.math
 
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 import kotlin.math.acos
 import kotlin.math.atan2
 import kotlin.math.sqrt

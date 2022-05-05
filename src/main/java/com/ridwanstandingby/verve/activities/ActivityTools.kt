@@ -10,7 +10,7 @@ import com.ridwanstandingby.verve.math.IntVector2
 import com.ridwanstandingby.verve.sensor.press.PressDetector
 import com.ridwanstandingby.verve.sensor.rotation.RotationDetector
 import com.ridwanstandingby.verve.sensor.swipe.SwipeDetector
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
 @Api
 fun AnimationActivity.calculateScreenSize(): IntVector2 {
@@ -34,6 +34,7 @@ fun AnimationActivity.createSwipeDetector(): SwipeDetector =
 fun AnimationActivity.createPressDetector(): PressDetector =
     PressDetector().also { motionEventHandlers.add(it::handleMotionEvent) }
 
+@Api
 fun AnimationActivity.keepScreenOnAndHideSystemUI() {
     @Suppress("deprecation")
     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or WindowManager.LayoutParams.FLAG_FULLSCREEN)

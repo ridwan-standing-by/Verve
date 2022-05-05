@@ -1,6 +1,6 @@
 package com.ridwanstandingby.verve.animation
 
-import com.ridwanstandingby.verve.tools.Api
+import com.ridwanstandingby.verve.Api
 
 @Api
 class AnimationRule<A : Animation<P, R, I>, P : AnimationParameters, R : AnimationRenderer, I : AnimationInput>(
