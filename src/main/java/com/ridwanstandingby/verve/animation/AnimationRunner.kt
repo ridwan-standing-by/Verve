@@ -40,12 +40,12 @@ class AnimationRunner(
     @Api
     fun attach(animationView: SurfaceView) {
         animationView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(v: View?) {
+            override fun onViewAttachedToWindow(v: View) {
                 this@AnimationRunner.animationSurfaceHolder = animationView.holder
                 resume()
             }
 
-            override fun onViewDetachedFromWindow(v: View?) {
+            override fun onViewDetachedFromWindow(v: View) {
                 pause()
                 this@AnimationRunner.animationSurfaceHolder = null
             }
