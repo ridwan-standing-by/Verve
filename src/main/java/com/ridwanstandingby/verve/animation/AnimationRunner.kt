@@ -128,12 +128,16 @@ class AnimationRunner(
 
     private fun render() {
         animationSurfaceHolder?.let {
-            if (it.surface.isValid) {
-                val canvas = it.lockCanvas()
-                if (canvas != null && it.surface?.isValid == true) {
-                    animation?.renderer?.updateCanvas(canvas)
-                    it.unlockCanvasAndPost(canvas)
+            try {
+                if (it.surface.isValid) {
+                    val canvas = it.lockCanvas()
+                    if (canvas != null && it.surface?.isValid == true) {
+                        animation?.renderer?.updateCanvas(canvas)
+                        it.unlockCanvasAndPost(canvas)
+                    }
                 }
+            } catch (_: IllegalStateException) {
+            } catch (_: IllegalArgumentException) {
             }
         }
     }
