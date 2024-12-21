@@ -20,9 +20,9 @@ fun AnimationActivity.calculateScreenSize(): IntVector2 {
 }
 
 @Api
-fun AnimationActivity.createRotationDetector(): RotationDetector {
+fun AnimationActivity.createRotationDetector(): RotationDetector? {
     val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-    val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+    val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) ?: return null
     return RotationDetector(sensorManager, rotationSensor)
 }
 
